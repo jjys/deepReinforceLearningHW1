@@ -1,6 +1,6 @@
 :root {
-    --bg-paper: #f4ede4;
-    /* Light creamy paper color */
+    --bg-paper: #f9f5f0;
+    /* Light creamy paper color for the card */
     --ink-color: #2c2b29;
     /* Dark gray/brownish ink */
     --accent-red: #d32f2f;
@@ -8,6 +8,8 @@
     --accent-blue: #1976d2;
     /* Blue pen accent */
     --border-thickness: 3px;
+    --space-bg: #0b0c10;
+    /* Dark space background */
 }
 
 * {
@@ -17,9 +19,8 @@
 }
 
 body {
-    /* Base font */
     font-family: 'Kalam', cursive;
-    background-color: var(--bg-paper);
+    background-color: var(--space-bg);
     color: var(--ink-color);
     min-height: 100vh;
     display: flex;
@@ -27,35 +28,133 @@ body {
     align-items: center;
     overflow: hidden;
     position: relative;
-    /* Optional: subtle paper texture pattern using a radial gradient background */
-    background-image: radial-gradient(#d4caba 1px, transparent 1px);
-    background-size: 20px 20px;
 }
 
-/* Remove the fluid blobs from before and add sketchy lines or just clean it up */
-.background-animation {
-    display: none;
+/* --- Starry Space Background --- */
+.stars-bg {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
 }
 
-/* Hand-drawn sketchy container */
+/* CSS trick to generate many stars with box-shadow */
+@function multiple-box-shadow($n) {
+    $value: '#{random(2000)}px #{random(2000)}px #FFF';
+
+    @for $i from 2 through $n {
+        $value: '#{$value}, #{random(2000)}px #{random(2000)}px #FFF';
+    }
+
+    @return unquote($value);
+}
+
+.stars-layer {
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    /* Manual shadow since sass function isn't natively supported in vanilla CSS */
+    box-shadow:
+        10vw 20vh #fff, 30vw 40vh #fff, 50vw 10vh #fff, 70vw 60vh #fff, 90vw 30vh #fff,
+        15vw 80vh #fff, 35vw 90vh #fff, 55vw 50vh #fff, 75vw 20vh #fff, 95vw 80vh #fff,
+        5vw 5vh #fff, 25vw 25vh #fff, 45vw 45vh #fff, 65vw 65vh #fff, 85vw 85vh #fff,
+        20vw 15vh #fff, 40vw 35vh #fff, 60vw 75vh #fff, 80vw 95vh #fff, 10vw 95vh #fff,
+        50vw 90vh #fff, 70vw 5vh #fff, 90vw 15vh #fff, 30vw 80vh #fff, 10vw 50vh #fff,
+        60vw 10vh #fff, 80vw 30vh #fff, 20vw 60vh #fff, 40vw 10vh #fff;
+    animation: animStar 50s linear infinite;
+    border-radius: 50%;
+}
+
+.stars-layer::after {
+    content: " ";
+    position: absolute;
+    top: 100vh;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: inherit;
+}
+
+.stars-layer-2 {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow:
+        12vw 22vh #fff, 32vw 42vh #fff, 52vw 12vh #fff, 72vw 62vh #fff, 92vw 32vh #fff,
+        18vw 85vh #fff, 38vw 92vh #fff, 58vw 52vh #fff, 78vw 22vh #fff, 98vw 82vh #fff,
+        8vw 8vh #fff, 28vw 28vh #fff, 48vw 48vh #fff, 68vw 68vh #fff, 88vw 88vh #fff;
+    animation: animStar 100s linear infinite;
+    border-radius: 50%;
+}
+
+.stars-layer-2::after {
+    content: " ";
+    position: absolute;
+    top: 100vh;
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: inherit;
+}
+
+.stars-layer-3 {
+    width: 4px;
+    height: 4px;
+    background: transparent;
+    box-shadow:
+        15vw 25vh #fff, 55vw 15vh #fff, 75vw 65vh #fff,
+        45vw 95vh #fff, 85vw 25vh #fff, 25vw 85vh #fff,
+        35vw 10vh #fff, 95vw 50vh #fff, 5vw 45vh #fff;
+    animation: animStar 150s linear infinite;
+    border-radius: 50%;
+}
+
+.stars-layer-3::after {
+    content: " ";
+    position: absolute;
+    top: 100vh;
+    width: 4px;
+    height: 4px;
+    background: transparent;
+    box-shadow: inherit;
+}
+
+@keyframes animStar {
+    from {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    to {
+        transform: translateY(-100vh) rotate(5deg);
+    }
+}
+
+/* --- Hand-drawn sketchy container --- */
 .glass-container {
     background: var(--bg-paper);
+    /* Subtle paper texture */
+    background-image: radial-gradient(#d4caba 1px, transparent 1px);
+    background-size: 20px 20px;
+
     /* Irregular sketchy border */
     border: var(--border-thickness) solid var(--ink-color);
     border-radius: 2px 255px 3px 25px / 255px 5px 225px 3px;
     padding: 3rem 4rem;
     box-shadow:
-        15px 15px 0px rgba(0, 0, 0, 0.1),
-        /* Hard drop shadow for sketchy style */
+        15px 15px 0px rgba(0, 0, 0, 0.5),
+        /* Hard drop shadow for contrast against space */
         inset -5px -5px 0px rgba(0, 0, 0, 0.05);
-    /* Inner shade */
     text-align: center;
     max-width: 600px;
     width: 90%;
     z-index: 10;
     position: relative;
     transform: rotate(-1deg);
-    animation: dropIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: dropIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 /* Adds a second drawn line effect */
@@ -75,12 +174,12 @@ body {
 @keyframes dropIn {
     from {
         opacity: 0;
-        transform: translateY(-30px) rotate(-5deg);
+        transform: translateY(-50px) rotate(-10deg) scale(0.9);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) rotate(-1deg);
+        transform: translateY(0) rotate(-1deg) scale(1);
     }
 }
 
@@ -98,7 +197,6 @@ header {
     line-height: 1.1;
     text-decoration: underline;
     text-decoration-style: wavy;
-    /* Makes the underline look hand-drawn */
     text-decoration-thickness: 3px;
     text-underline-offset: 8px;
 }
@@ -119,7 +217,7 @@ header {
     border: 2px dashed var(--ink-color);
     border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
     position: relative;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .time-label {
@@ -194,14 +292,11 @@ header {
     transition: all 0.2s ease;
     position: relative;
     display: inline-block;
-    /* sketchy border radius */
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
 }
 
-/* Create a sketched fill effect on hover */
 .primary-btn {
     background-color: var(--bg-paper);
-    /* Crosshatch or solid simple color */
 }
 
 .primary-btn:hover {
