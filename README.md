@@ -1,6 +1,6 @@
 # Personal Portfolio & Dynamic Clock 🕒
 
-[➡️ **查看 Demo 網站 (Live Demo)**](https://jjys.github.io/deepReinforceLearningHW1/)
+<a href="https://jjys.github.io/deepReinforceLearningHW1/" target="_blank">➡️ **查看 Demo 網站 (Live Demo)**</a>
 
 這是一個結合了「手繪塗鴉質感」與「動態宇宙星空背景」的個人介紹網頁，中央包含了一個能夠即時動態更新「時、分、秒」的時鐘面板。
 
